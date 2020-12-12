@@ -1,8 +1,8 @@
 //criar um sistema para farmacia, onde devemos cadastrar, remove, busca, lista medicamentos e clientes.
 //apagar cadastro cliente;apagar cadastro medicamentos;consultar um cliente, deve exibir os dados e os medicamentos comprados;
-//consultar um medicamento, vai exibir os clientes que compraram;a lista de nome é ordenada por nome;
-//e alista de medicamento é ordenada por ID;quando eu remover um cliente ou remedio, nao pode mais aparecer nas consultas de cliente ou mediacamento;
-//medicamento{id,nome;quantidade;preço;laboratorio;dosagem;targa;data de validade.}
+//consultar um medicamento, vai exibir os clientes que compraram;a lista de nome Ã© ordenada por nome;
+//e alista de medicamento Ã© ordenada por ID;quando eu remover um cliente ou remedio, nao pode mais aparecer nas consultas de cliente ou mediacamento;
+//medicamento{id,nome;quantidade;preÃ§o;laboratorio;dosagem;targa;data de validade.}
 //cliente{nome;cpf;telefone;tipo sangue;id;email:medicamentoscomprou (10 elementos);
 //}
 #include <stdio.h>
@@ -24,6 +24,7 @@ struct elemento{
 	struct cliente cli;
 	struct medicamento medic;
 	struct elemento *prox;
+	struct elemento *anterior;
 };
 
 typedef struct elemento *lista;
@@ -121,7 +122,7 @@ int inserirFim(struct medicamento med,lista* li){
 	}
 	
 	node->medic = med;
-	node->prox = NULL;//prepara o nó
+	node->prox = NULL;//prepara o nÃ³
 	
 	if((*li) == NULL){
 		*li = node;
@@ -138,7 +139,7 @@ lista buscaMed(lista* li){
 	system("cls");
 	Elem* aux = *li;                       
 //	  **ASSIM COMO NO LISTAR, VC PRECISA CRIAR UM AUXILIAR PARA PASSAR O PONTEIRO DA LISTA, 
-//POIS É NA ESTRUTURA ELEM QUE ESTÁ A STRUCT DO MEDICAMENTO;
+//POIS Ã‰ NA ESTRUTURA ELEM QUE ESTÃ A STRUCT DO MEDICAMENTO;
 	char medicamento[15];
 	
 	if(aux == NULL){ 
@@ -151,13 +152,14 @@ lista buscaMed(lista* li){
 	gets(medicamento);
 	
 	while(aux != NULL && strcmp(aux->medic.nomeMedic, medicamento) != 0){
-    	printf("Medicamento não encontrado\n\n\n");
+    	printf("Medicamento nÃ£o encontrado\n\n\n");
 		aux = aux->prox;
 	} 
     
     while(aux != NULL && strcmp(aux->medic.nomeMedic, medicamento) == 0){ 
-		//VAI PERCORRER TODA LISTA (ENQUANTO NÃO CHEGAR AO FINAL(NULL) E ENQUANTO NÃO ACHAR O NOME IGUAL);
+		//VAI PERCORRER TODA LISTA (ENQUANTO NÃƒO CHEGAR AO FINAL(NULL) E ENQUANTO NÃƒO ACHAR O NOME IGUAL);
 		printf("Nome do medicamento:%s\n",aux->medic.nomeMedic);
+		printf("Id do medicamento:%d",aux->medic.id);
 		printf("Nome do laboratorio:%s\n",aux->medic.laboratorio);
 		printf("Tarja do medicamento:%s\n",aux->medic.tarja);
 		printf("Validade do medicamento:%s\n",aux->medic.validade);
@@ -195,9 +197,38 @@ lista busca(lista *li){
 		printf("Sangue do cliente:%s\n",aux->cli.sangue);
 		printf("Email do cliente:%s\n",aux->cli.email);
 		printf("Medicamento do cliente:%s\n\n\n",aux->cli.medicamentosComprou);
+		return aux;
 		aux=aux->prox;
 	}	
  
+}
+lista *removerCli(lista *li){
+	system("cls");
+//	Elem *ant;
+//	Elem* p =*li;
+//	if(li == NULL){
+//		printf("Nenhum cliente no cadastro.\n\n\n");
+//		return li;
+//	}
+//	
+//	if(p->prox== NULL && p->anterior == NULL){
+//		return NULL;
+//	}
+//	else if(li==p){
+//		li = p->prox;
+//		li->anterior=NULL;
+//	}
+//	else if(p->anterior!=NULL && p->prox!=NULL){
+//		p->anterior->prox = p->prox;
+//		p->prox->anterior = p->anterior;
+//	}
+//	else if(p->prox == NULL){
+//		p->anterior->prox = NULL;
+//	}
+//	
+//	free(p);
+//	return li;
+	
 }
 main(){
 	struct cliente c;
@@ -210,7 +241,7 @@ main(){
 	
 		
 	while(ok==0){
-		//	Menu de navegação do programa com opção de sair.
+		//	Menu de navegaÃ§Ã£o do programa com opÃ§Ã£o de sair.
 		printf("Bem vindo ao cadastro de cliente e medicamento:\n");
 		printf("Digite 1 para cadastrar cliente:\n");//ok
 		printf("Digite 2 para listar clientes:\n");//ok
@@ -255,6 +286,8 @@ main(){
 			
 			case 3:
 				//para remover eu primeiro preciso fazer uma busca para saber se o cliente existe
+				busca(li);
+				li=removerCli(li);
 			break;
 			
 			case 4:
@@ -311,7 +344,7 @@ main(){
 			case 11:
 				system("cls");
         		printf("Voce pediu para sair, fechando programa...\n");
-        		Sleep(3000); // Aqui ele dorme por 3 segundos depois continua o código
+        		Sleep(3000); // Aqui ele dorme por 3 segundos depois continua o cÃ³digo
 				exit(0);
 			break;
 				
